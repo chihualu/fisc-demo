@@ -1,4 +1,4 @@
-package org.demo.config;
+package org.demo.provider;
 
 import lombok.Data;
 import lombok.extern.log4j.Log4j2;

@@ -5,6 +5,7 @@ import org.demo.filter.JwtFilter;
 import org.demo.handler.CustomAuthenticationFailureHandler;
 import org.demo.handler.CustomLogoutSuccessHandler;
 import org.demo.handler.CustomSimpleUrlAuthenticationSuccessHandler;
+import org.demo.provider.CustomAuthenticationProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -58,9 +59,7 @@ public class WebConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/web/**").authenticated()     //Web使用Security驗證，需登入
                 .antMatchers("/api/**").permitAll()         //API使用Filter驗證，使用Token
                 .anyRequest().permitAll()
-                .and().csrf(httpSecurityCsrfConfigurer-> {
-                    httpSecurityCsrfConfigurer.ignoringAntMatchers("/api/**");
-                });
+                .and().csrf(httpSecurityCsrfConfigurer->httpSecurityCsrfConfigurer.ignoringAntMatchers("/api/**"));
 
         http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 
