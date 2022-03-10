@@ -1,0 +1,25 @@
+<html
+        xmlns:th="http://www.thymeleaf.org">
+<head>
+    <style id="antiClickjack">body {
+        display: none !important;
+    }</style>
+    <script>
+        if (self === top) {
+            var antiClickjack = document.getElementById("antiClickjack");
+            antiClickjack.parentNode.removeChild(antiClickjack);
+        }
+    </script>
+</head>
+<body>
+<th:block th:fragment="footer">
+    <footer class="fixed-bottom bg-primary text-light">
+        <div class="d-flex flex-nowrap">
+            <div class="">
+                <a class="text-light" accesskey="Z" href="#Z" id="AZ" name="Z" title="下方功能區塊">:::</a>
+            </div>
+            <div class="flex-fill text-center">©2021 Provision. All rights reserved.</div>
+        </div>
+    </footer>
+</th:block>
+</body>

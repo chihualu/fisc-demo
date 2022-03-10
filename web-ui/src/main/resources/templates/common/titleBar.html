@@ -1,0 +1,23 @@
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <style id="antiClickjack">body {
+            display: none !important;
+        }</style>
+        <script>
+            if (self === top) {
+                var antiClickjack = document.getElementById("antiClickjack");
+                antiClickjack.parentNode.removeChild(antiClickjack);
+            }
+        </script>
+    </head>
+    <body>
+        <th:block th:fragment="titleBar">
+            <nav aria-label="breadcrumb" th:if="${title}">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item" th:each="t : ${title}"  th:utext="${t}">Home</li>
+                    <li class="breadcrumb-item" th:if="${extTitle}" th:utext="${extTitle}">Ext</li>
+                </ol>
+            </nav>
+        </th:block>
+    </body>
+</html>

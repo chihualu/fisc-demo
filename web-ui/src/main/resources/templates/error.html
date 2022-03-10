@@ -1,0 +1,31 @@
+<html layout:decorate="~{common/layout}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <style id="antiClickjack">body {
+        display: none !important;
+    }</style>
+    <script>
+        if (self === top) {
+            var antiClickjack = document.getElementById("antiClickjack");
+            antiClickjack.parentNode.removeChild(antiClickjack);
+        }
+    </script>
+</head>
+<body>
+
+<div layout:fragment="content">
+    <div id="notfound">
+        <div class="notfound">
+            <div class="notfound-404">
+                <h1>500</h1>
+            </div>
+            <h2>抱歉，未知的錯誤！</h2>
+            <p>請聯絡系統管理員</p>
+            <small class="text-left text-danger" th:text="${exception}"></small><br/><br/>
+            <a class="btn btn-primary px-5" th:href="@{/logout}">登出</a>
+        </div>
+    </div>
+</div>
+</body>
+
+</html>

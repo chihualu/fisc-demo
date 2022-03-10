@@ -1,10 +1,9 @@
 package org.demo.filter;
 
 import lombok.extern.log4j.Log4j2;
+import org.apache.http.entity.ContentType;
 import org.demo.provider.JwtTokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.Ordered;
-import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -38,8 +37,17 @@ public class JwtFilter extends OncePerRequestFilter {
             chain.doFilter(request, response);
         } catch (Exception e) {
             log.error("", e);
-            response.setStatus(HttpStatus.UNAUTHORIZED.value());
-            response.getOutputStream().write("UNAUTHORIZED".getBytes(StandardCharsets.UTF_8));
+            if(request.getContentType() == null) {
+                response.sendRedirect("common/error-500");
+                return;
+            }
+            String contentType = ContentType.create(request.getContentType()).toString().toLowerCase();
+            if (contentType.indexOf("Json") > -1){
+                response.sendRedirect("common/error-500");
+            }else {
+                response.setStatus(HttpStatus.UNAUTHORIZED.value());
+                response.getOutputStream().write("UNAUTHORIZED".getBytes(StandardCharsets.UTF_8));
+            }
         }
 
     }
