@@ -1,37 +1,37 @@
-## Welcome to GitHub Pages
-
-You can use the [editor on GitHub](https://github.com/chihualu/fisc-demo/edit/gh-pages/index.md) to maintain and preview the content for your website in Markdown files.
-
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
-
-### Markdown
-
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
-
+# 實作課 [Github](https://github.com/chihualu/fisc-demo)
+##  課程宗旨
 ```markdown
-Syntax highlighted code block
-
-# Header 1
-## Header 2
-### Header 3
-
-- Bulleted
-- List
-
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
+從零開始
+前端網頁製作
+後臺程式間接
 ```
+##  上課人員: 
+- 3/4   Kenny   (kenny_lu@provision.com.tw)
+- 3/11  Steven  (steven_lin@provision.com.tw)
 
-For more details see [Basic writing and formatting syntax](https://docs.github.com/en/github/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax).
-
-### Jekyll Themes
-
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/chihualu/fisc-demo/settings/pages). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
-
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://support.github.com/contact) and we’ll help you sort it out.
+##  課程內容
+### 3/4   前端ip白名單 + JWT驗證 
+```markdown
+  特定網址白名單驗證，藉此增加安全度
+  API功能需授權  
+1.  POST http://127.0.0.1:8080/api/hello/kenny
+  **收到回覆 => UNAUTHORIZED**
+2.  POST http://127.0.0.1:8080/bye/kenny
+  **收到回覆 => Bye, kenny**
+3.  POST http://127.0.0.1:8080/auth/kenny
+  **收到回覆 => eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJrZW5ueSIsImF1dGgiOiJVU0VSIiwiaWF0IjoxNjQ2NTc4Mjk1LCJleHAiOjE2NDY2NjQ2OTV9.yC14M0cR__OXQlCeNhNxcrV85pSls--3KrmE69jOhBo**
+  **JWT token每次回覆皆會不同**
+4.  POST http://127.0.0.1:8080/api/hello/kenny
+  **request Header 加上 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJrZW5ueSIsImF1dGgiOiJVU0VSIiwiaWF0IjoxNjQ2NTc4Mjk1LCJleHAiOjE2NDY2NjQ2OTV9.yC14M0cR__OXQlCeNhNxcrV85pSls--3KrmE69jOhBo**
+  **收到回覆 => Hello World, kenny**
+5.  POST http://127.0.0.1:8080/bye/kenny
+  **收到回覆 => Bye, kenny**
+```
+### 3/11  網頁製作 
+```markdown
+1.  登入功能-Spring Security
+2.  網頁模板實作-Thymeleaf
+3.  多國語系-i18n
+4.  設定檔加密-Jasypt
+5.  AOP
+```
