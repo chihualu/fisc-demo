@@ -1,0 +1,104 @@
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8"/>
+        <meta content="IE=edge" http-equiv="X-UA-Compatible"/>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
+        <meta CONTENT="NO-CACHE" HTTP-EQUIV="CACHE-CONTROL">
+        <meta name="_csrf" th:content="${_csrf.token}"/>
+        <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+        <meta name="token" th:content="${loginForm.token}" th:if="*{loginForm!=null}"/>
+        <link rel="shortcut icon" th:href="@{/static/img/favicon.ico}"/>
+
+        <link rel="stylesheet" th:href="@{/static/css/error.css}" type="text/css"/>
+        <link rel="stylesheet" th:href="@{/static/css/fontawesome-all.css}" type="text/css"/>
+        <link rel="stylesheet" th:href="@{/static/css/main.css}" type="text/css"/>
+        <link rel="stylesheet" th:href="@{/static/css/bootstrap-datepicker3.css}" type="text/css"/>
+        <link rel="stylesheet" th:href="@{/static/css/bootstrap-select.css}" type="text/css"/>
+        <link rel="stylesheet" th:href="@{/static/css/pro.main.css}">
+        <link rel="stylesheet" th:href="@{/static/css/pro.common.css}">
+        <link rel="stylesheet" th:href="@{/static/css/pro.custom.css}">
+        <link rel="stylesheet" th:href="@{/static/css/dark-mode.css}">
+        <link rel="stylesheet" th:href="@{/static/css/datatables.min.css}" type="text/css"/>
+        <link rel="stylesheet" th:href="@{/static/css/buttons.bootstrap4.css}" type="text/css"/>
+        <link rel="stylesheet" th:href="@{/static/css/sweetalert2.min.css}" type="text/css"/>
+        <link rel="stylesheet" th:href="@{/static/css/toasty.css}" type="text/css"/>
+        <link rel="stylesheet" th:href="@{/static/css/dashboard.css}" type="text/css"/>
+        <link rel="stylesheet" th:href="@{/static/css/select2.min.css}" type="text/css"/>
+
+        <script th:src="@{/static/js/jquery-3.5.1.min.js}"></script>
+        <script th:src="@{/static/js/jquery.validate.js}"></script>
+        <script th:src="@{/static/js/jQuery.print.js}"></script>
+        <script th:src="@{/static/js/popper.min.js}"></script>
+        <script th:src="@{/static/js/util.js}"></script>
+        <script th:src="@{/static/js/tooltip.js}"></script>
+        <script th:src="@{/static/js/bootstrap.js}"></script>
+        <script th:src="@{/static/js/bootstrap-datepicker.js}"></script>
+<!--        <script th:src="@{/static/js/bootstrap-select.js}"></script>-->
+        <script th:src="@{/static/js/dark-mode-switch.js}" defer></script>
+
+        <script th:src="@{/static/js/datatables.min.js}"></script>
+<!--        <script th:src="@{/static/js/dataTables.bootstrap4.min.js}"></script>-->
+<!--        <script th:src="@{/static/js/dataTables.buttons.min.js}"></script>-->
+        <script th:src="@{/static/js/buttons.bootstrap4.js}"></script>
+<!--        <script th:src="@{/static/js/rowGroup.bootstrap4.js}"></script>-->
+<!--        <script th:src="@{/static/js/rowReorder.bootstrap4.js}"></script>-->
+        <script th:src="@{/static/js/buttons.print.min.js}"></script>
+<!--        <script th:src="@{/static/js/dataTables.rowsGroup.js}"></script>-->
+        <script th:src="@{/static/js/sweetalert2.min.js}"></script>
+        <script th:src="@{/static/js/common.js}"></script>
+        <script th:src="@{/static/js/jquery-dateformat.js}"></script>
+        <script th:src="@{/static/js/datatables.Chinese-traditional.js}"></script>
+<!--        <script th:src="@{/static/js/dataTables.colReorder.min.js}"></script>-->
+<!--        <script th:src="@{/static/js/dataTables.checkboxes.min.js}"></script>-->
+        <script th:src="@{/static/js/toasty.js}" defer></script>
+        <script th:src="@{/static/js/pro.common.js}" ></script>
+        <script th:src="@{/static/js/validation.js}" ></script>
+
+        <script th:src="@{/static/js/chart.js}" ></script>
+        <script th:src="@{/static/js/chartjs-plugin-datalabels.js}" ></script>
+        <script th:src="@{/static/js/chartjs-plugin-doughnutlabel.js}" ></script>
+
+        <script th:src="@{/static/js/echarts.min.js}" ></script>
+        <script th:src="@{/static/js/moment.js}" ></script>
+        <script th:src="@{/static/js/select2.min.js}" ></script>
+        <script th:src="@{/static/js/dataTables.select.min.js}" ></script>
+        <title th:utext="#{title.global}"></title>
+
+        <style id="antiClickjack">
+            body {
+                display: none !important;
+            }
+
+        </style>
+        <script>
+            if (self === top) {
+                var antiClickjack = document.getElementById("antiClickjack");
+                antiClickjack.parentNode.removeChild(antiClickjack);
+            }
+        </script>
+    </head>
+    <body>
+        <th:block th:include="common/topMenu :: topMenu"/>
+        <a accesskey="C" class="accesskey c text-light " href="#C" name="C" title="中央內容導覽區塊(alt+c)">:::</a>
+        <div id="mainBody" class="p-0 m-0 px-5" layout:fragment="content"></div>
+        <th:block th:include="common/footer :: footer"/>
+        <div id="overlay" class="overlay hidden vw-100 vh-100">
+                <div class=" d-flex justify-content-center vh-100">
+                    <div class="lds-dual-ring align-self-center">
+                    </div>
+                </div>
+        </div>
+        <script th:src="@{/static/js/pro.custom.js}" defer></script>
+        <script>
+            $(document).on("keypress", "form", function(event) {
+                //if(event.target.type == 'text' || event.target.type == 'search' || event.target.type == 'date' || event.target.type == 'email'){
+                if(event.target.type == 'button' || event.target.type == 'submit'){
+                    return event.keyCode == 13;
+                }
+                return event.keyCode != 13;
+            });
+        </script>
+    </body>
+</html>

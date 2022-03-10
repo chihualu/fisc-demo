@@ -1,0 +1,27 @@
+<html layout:decorate="~{common/indexLayout}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <style id="antiClickjack">body {
+        display: none !important;
+    }</style>
+    <script>
+        if (self === top) {
+            var antiClickjack = document.getElementById("antiClickjack");
+            antiClickjack.parentNode.removeChild(antiClickjack);
+        }
+    </script>
+</head>
+<body>
+
+    <div layout:fragment="content">
+        <div class="d-flex justify-content-center">
+            <div class="container-fluid py-0">
+                <div class="row align-items-start py-0 px-4">
+                    Welcome
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

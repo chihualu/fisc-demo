@@ -1,0 +1,56 @@
+<html layout:decorate="~{common/layout}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <style id="antiClickjack">body {
+        display: none !important;
+    }</style>
+    <script>
+        if (self === top) {
+            var antiClickjack = document.getElementById("antiClickjack");
+            antiClickjack.parentNode.removeChild(antiClickjack);
+        }
+    </script>
+</head>
+<body>
+<div layout:fragment="content">
+    <th:block th:include="common/titleBar :: titleBar"/>
+    <div class="card">
+
+        <!-- 查詢頁 -->
+        <div class="card-body collapse show" id="collapseSearch">
+            <form id="ajaxForm" method="GET" th:action="@{/api/v1/maintain/func1}" class="needs-validation">
+                <div class="alert alert-danger" role="alert" style="display: none;"></div>
+                <!-- 類別 -->
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">現在時間:</label>
+                    <div class="col-sm-10">
+                        <span th:text="${time}" />
+                    </div>
+                </div>
+
+                <!-- 查詢按鈕 -->
+                <div class="form-group row">
+                    <div class="col-sm-12 text-right">
+                        <button class="btn btn-primary btn-sm mx-2 px-4" id="btn_query" th:utext="#{btn.query}" type="button"></button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+
+        // 按下查詢按鈕
+        $('#btn_query').on('click', function (event) {
+            console.log("QQ");
+        })
+
+        /*]]>*/
+    </script>
+
+</div>
+</body>
+</html>
+
+

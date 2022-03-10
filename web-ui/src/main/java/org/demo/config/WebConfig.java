@@ -1,38 +1,25 @@
 package org.demo.config;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.log4j.Log4j2;
-import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
-import org.apache.http.conn.ssl.TrustStrategy;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
 import org.demo.filter.JwtFilter;
+import org.demo.handler.CustomAuthenticationFailureHandler;
+import org.demo.handler.CustomLogoutSuccessHandler;
+import org.demo.handler.CustomSimpleUrlAuthenticationSuccessHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Lazy;
-import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.web.multipart.MultipartResolver;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.LocaleResolver;
-import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
-import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 
-import javax.net.ssl.SSLContext;
-import java.security.KeyManagementException;
-import java.security.KeyStoreException;
-import java.security.NoSuchAlgorithmException;
-import java.security.cert.X509Certificate;
 import java.util.List;
 
-//@Configuration
 @Log4j2
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(securedEnabled = true)
@@ -44,22 +31,60 @@ public class WebConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private JwtFilter jwtFilter;
 
+    @Autowired
+    private LocaleResolver localeResolver;
+    @Autowired
+    private CustomSimpleUrlAuthenticationSuccessHandler loginSuccessHandler;
+    @Autowired
+    private CustomAuthenticationFailureHandler loginFailureHandler;
+    @Autowired
+    private CustomLogoutSuccessHandler logoutHandler;
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        StringBuffer sb = new StringBuffer();
-        if(allowIps != null && allowIps.size() > 0) {
-            sb = new StringBuffer("hasIpAddress('"+allowIps.get(0)+"')");
-            for (int i = 1; i < allowIps.size(); i++) {
-                sb.append(" or hasIpAddress('" + allowIps.get(i) + "')");
-            }
-            log.info("Any requests allow ip are {}", allowIps);
-        } else {
-            log.info("Any requests are permitted");
-        }
+
+        http.sessionManagement().maximumSessions(1).expiredUrl("/login?timeout=true");
+
+        http.formLogin() // 定義當需要使用者登入時候，轉到的登入頁面。
+                .loginPage("/login") // 設定登入頁面
+                .defaultSuccessUrl("/web/index", true)
+                .usernameParameter("userId")
+                .failureUrl("/login?error=true")
+                .successHandler(loginSuccessHandler)
+                .failureHandler(loginFailureHandler)
+                .permitAll();
+
         http.authorizeRequests()
-                .anyRequest().access(sb.toString())
-                .and().csrf().disable()
-                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+                .antMatchers("/web/**").authenticated()     //Web使用Security驗證，需登入
+                .antMatchers("/api/**").permitAll()         //API使用Filter驗證，使用Token
+                .anyRequest().permitAll()
+                .and().csrf(httpSecurityCsrfConfigurer-> {
+                    httpSecurityCsrfConfigurer.ignoringAntMatchers("/api/**");
+                });
+
+        http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+
+        http.logout()
+                .logoutSuccessHandler(logoutHandler)
+                .logoutSuccessUrl("/login?logout=true")
+                .addLogoutHandler(logoutHandler)
+                .deleteCookies("JSESSIONID").invalidateHttpSession(true).clearAuthentication(true).permitAll();
+    }
+
+
+    @Bean(name = "multipartResolver")
+    public MultipartResolver multipartResolver() {
+        CommonsMultipartResolver resolver = new CommonsMultipartResolver();
+        resolver.setDefaultEncoding("UTF-8");
+        return resolver;
+    }
+
+
+    @Autowired
+    private CustomAuthenticationProvider customAuthenticationProvider;
+    @Autowired
+    public void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.authenticationProvider(customAuthenticationProvider);
     }
 
 }
