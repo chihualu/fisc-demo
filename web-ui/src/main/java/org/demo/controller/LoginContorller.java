@@ -1,6 +1,7 @@
 package org.demo.controller;
 
 import lombok.extern.log4j.Log4j2;
+import org.demo.provider.JwtTokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -20,6 +21,9 @@ import java.util.Locale;
 @Controller
 @Log4j2
 public class LoginContorller {
+    @Autowired
+    private JwtTokenProvider jwtTokenProvider;
+
     @Autowired
     LocaleResolver localeResolver;
 
@@ -48,6 +52,10 @@ public class LoginContorller {
     @RequestMapping(value = {"/web", "/web/index"})
     public String index(Model model, HttpServletRequest request, HttpServletResponse response, @RequestParam(required = false) String locale) {
         setLocale(request, response, locale);
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String userId = userDetails.getUsername();
+        String roleId = userDetails.getAuthorities().stream().findFirst().get().getAuthority();
+        model.addAttribute("token", jwtTokenProvider.createToken(userId, roleId));
         return "index";
     }
 
