@@ -48,7 +48,7 @@ public class WebConfig extends WebSecurityConfigurerAdapter {
 
         http.formLogin() // 定義當需要使用者登入時候，轉到的登入頁面。
                 .loginPage("/login") // 設定登入頁面
-                .defaultSuccessUrl("/web/index", true)
+                .defaultSuccessUrl("/web/index", true)  // 設定成功導入頁面
                 .usernameParameter("userId")
                 .failureUrl("/login?error=true")
                 .successHandler(loginSuccessHandler)
@@ -58,8 +58,8 @@ public class WebConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .antMatchers("/web/**").authenticated()     //Web使用Security驗證，需登入
                 .antMatchers("/api/**").permitAll()         //API使用Filter驗證，使用Token
-                .anyRequest().permitAll()
-                .and().csrf(httpSecurityCsrfConfigurer->httpSecurityCsrfConfigurer.ignoringAntMatchers("/api/**"));
+                .anyRequest().permitAll()                               //對 剩下API定義規則 >> HTTP 403
+                .and().csrf(httpSecurityCsrfConfigurer->httpSecurityCsrfConfigurer.ignoringAntMatchers("/api/**"));     //跨站請求
 
         http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 
