@@ -11,7 +11,7 @@
 - 3/04  [Kenny](mailto:kenny_lu@provision.com.tw)
 - 3/11  [Steven](mailto:steven_lin@provision.com.tw)
 - 3/18  [Jasper](mailto:jasper_lin@provision.com.tw)
-- 4/01  [Steve](mailto:jasper_lin@provision.com.tw)
+- 4/01  [Steve](mailto:Steve_Wang@provision.com.tw)
 - 5/06  [Rio](mailto:rio_chang@provision.com.tw)
 - 5/13  [Paul](mailto:paul_yang@provision.com.tw)
 - 5/20  [Paul](mailto:paul_yang@provision.com.tw)
@@ -93,3 +93,15 @@
 3. 期末報告**40分**\
 ``程式交付``
 ```
+
+### **加分名單**
+```markdown
+1. 3/4  => 407411437、407410025、407410058、408417011、407410389、404411059、407411049
+2. 3/11 => 407411437、407410025、407410058、408417011、407410389、404411059、407411049
+3. 3/18 => 407411437、407410025、407410058、408417011、407410389、404411059、407411049、408418126
+
+統計: 
+
+```
+
+
