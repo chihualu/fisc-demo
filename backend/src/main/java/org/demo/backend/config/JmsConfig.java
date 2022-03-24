@@ -46,7 +46,7 @@ public class JmsConfig {
         DefaultJmsListenerContainerFactory factory = new DefaultJmsListenerContainerFactory();
         factory.setErrorHandler(t -> {
             log.info("An error has occurred in the transaction");
-            log.error(t.getCause().getMessage());
+            log.error("", t);
         });
 
         factory.setSessionAcknowledgeMode(Session.AUTO_ACKNOWLEDGE);
