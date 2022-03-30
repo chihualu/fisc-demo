@@ -21,6 +21,7 @@
     <modules>
         <module>web-ui</module>
         <module>backend</module>
+        <module>demo-entity</module>
     </modules>
 
 </project>
