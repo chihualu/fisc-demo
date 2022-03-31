@@ -1,16 +1,14 @@
-package org.demo.controller.maintain;
+package org.demo.controller.fisc;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.log4j.Log4j2;
 import org.apache.activemq.artemis.jms.client.ActiveMQQueue;
 import org.demo.annotatioon.Logging;
-import org.demo.controller.maintain.form.FiscNoticeReq;
-import org.demo.controller.maintain.form.FiscNoticeRsp;
+import org.demo.controller.fisc.form.FiscNoticeReq;
+import org.demo.controller.fisc.form.FiscNoticeRsp;
 import org.demo.entity.web.impl.P3100Req;
 import org.demo.entity.web.impl.P3100Rsp;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.stereotype.Controller;
@@ -22,7 +20,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.UUID;
 
-@Controller
+@Controller("fisc.notice")
 @Log4j2
 public class FiscNoticeController {
 
@@ -30,13 +28,13 @@ public class FiscNoticeController {
     @Autowired
     private JmsTemplate jmsTemplate;
 
-    @GetMapping("/web/maintain/fiscNotice")
+    @GetMapping("/web/fisc/notice")
     public String page(Model model){
         model.addAttribute("time", new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(new Date()));
-        return "maintain/FiscNotice";
+        return "fisc/FiscNotice";
     }
 
-    @PostMapping(value = "/api/v1/maintain/fiscNotice")
+    @PostMapping(value = "/api/v1/fisc/notice")
     @Logging
     public ResponseEntity getInfo(@RequestBody FiscNoticeReq fiscNoticeReq) {
         try {

@@ -16,11 +16,11 @@
     <th:block th:include="common/titleBar :: titleBar"/>
     <div class="card">
         <div class="card-head" >
-            <h1 th:text="#{function.maintain.fisc-notice.title}"></h1>
+            <h1 th:text="#{function.fisc.fisc-notice.title}"></h1>
         </div>
         <!-- 查詢頁 -->
         <div class="card-body" >
-            <form id="ajaxForm" method="GET" th:action="@{/api/v1/maintain/fiscNotice}" class="needs-validation">
+            <form id="ajaxForm" method="GET" th:action="@{/api/v1/fisc/notice}" class="needs-validation">
                 <div class="alert alert-danger" role="alert" style="display: none;"></div>
                 <!-- 類別 -->
                 <div class="form-group row">

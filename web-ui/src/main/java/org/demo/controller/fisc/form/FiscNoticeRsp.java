@@ -1,4 +1,4 @@
-package org.demo.controller.maintain.form;
+package org.demo.controller.fisc.form;
 
 import lombok.Data;
 

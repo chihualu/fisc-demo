@@ -1,0 +1,106 @@
+<html layout:decorate="~{common/layout}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <style id="antiClickjack">body {
+        display: none !important;
+    }</style>
+    <script>
+        if (self === top) {
+            var antiClickjack = document.getElementById("antiClickjack");
+            antiClickjack.parentNode.removeChild(antiClickjack);
+        }
+    </script>
+</head>
+<body>
+<div layout:fragment="content">
+    <th:block th:include="common/titleBar :: titleBar"/>
+    <div class="card">
+        <div class="card-head" >
+            <h1 th:text="#{function.system.users.title}"></h1>
+        </div>
+        <!-- 查詢頁 -->
+        <div class="card-body" >
+            <form id="ajaxForm" method="GET" th:action="@{/api/v1/system/users}" class="needs-validation">
+                <div class="alert alert-danger" role="alert" style="display: none;"></div>
+                <!-- 類別 -->
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">使用者</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="userId" name="userId">
+                    </div>
+                </div>
+
+                <!-- 查詢按鈕 -->
+                <div class="form-group row">
+                    <div class="col-sm-12 text-center">
+                        <button class="btn btn-primary btn-sm mx-2 px-4" id="btn_query" th:utext="#{btn.query}" type="button"></button>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-sm-12 text-center">
+                        <table class="table table-sm table-striped table-bordered table-hover w-100 display" id="dataTables">
+                            <thead>
+                            <tr>
+                                <th class="text-center align-middle" >使用者代號</th>
+                                <th class="text-center align-middle" >使用者名稱</th>
+                                <th class="text-center align-middle" >群組代號</th>
+                                <th class="text-center align-middle" >最後登入IP</th>
+
+                            </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+
+        // 按下查詢按鈕
+        $('#btn_query').on('click', function (event) {
+            let dataTableConfig = {
+                "processing": true,
+                "destroy": true,
+                "ajax": {
+                    "url": $('#ajaxForm').attr('action')+"?userId="+$('#userId').val(),
+                    "type": "GET",
+                    "dataType": "json",
+                    "contentType": "application/json;charset=utf-8",
+                    "beforeSend": function (xhr) {
+                        xhr.setRequestHeader("Authorization", 'Bearer ' + $('meta[name=token]').attr("content"));
+                    },
+                    error: function (jqXHR) {
+                        failedDefaultHandler(jqXHR);
+                    }
+                },
+                "dom": "<'row'<'col-md-12 d-flex justify-content-between'lf>>" +
+                    "<'row'<'col-sm-12'tr>>" +
+                    "<'row'<'col-sm-12 col-md-6 text-left'i><'col-sm-12 col-md-6'p>>",
+                "language": zhTW_lang,
+                "columns": [
+                    {'data': 'userId', "defaultContent": ""},
+                    {'data': 'userName', "defaultContent": ""},
+                    {'data': 'roleId', "defaultContent": ""},
+                    {'data': 'lastLoginIp', "defaultContent": "-"}],
+                "stateSave": false,
+                "order": [],
+                "scrollX": true,
+                "scrollY": "60vh",
+                "scrollCollapse": true,
+                "paging": false,
+                "colReorder": true,
+                "lengthMenu": [ [10, 50, -1], [10, 50, "全部"] ]
+            }
+            $('#dataTables').DataTable(dataTableConfig);
+        })
+
+        /*]]>*/
+    </script>
+
+</div>
+</body>
+</html>
+
+

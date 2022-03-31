@@ -1,5 +1,6 @@
 <!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
+<html
+        xmlns:th="http://www.thymeleaf.org">
 <head>
     <style id="antiClickjack">body {
         display: none !important;
@@ -15,47 +16,87 @@
 <th:block th:fragment="topMenu">
     <nav class="navbar navbar-expand-lg navbar-fixed-top navbar-dark bg-primary">
         <a class="sr-only sr-only-focusable text-light " href="#C" id="shortStart" tabindex="1" title="跳到主要內容區塊">跳到主要內容區塊</a>
-        <a class="navbar-brand" th:href="@{/index}" th:title="#{title.global}" th:utext="#{title.global}"></a>
+        <a class="navbar-brand" href="#" th:onclick="homePage()"><span th:title="#{title.global}" th:utext="#{title.global}"></span></a>
         <a accesskey="U" class="accesskey u text-light " href="#U" id="startPoint" name="U" title="上方快速連結導覽區(alt+u)">:::</a>
-        <button aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler"
+        <button aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation"
+                class="navbar-toggler"
                 data-target="#navbarContent" data-toggle="collapse" type="button">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarContent">
-            <ul class="navbar-nav mr-auto" >
-                <li class="nav-item dropdown" >
-                    <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="maintain" role="button" data-bs-toggle="dropdown" aria-expanded="false"><span th:utext="#{function.maintain.title}"></span></a>
-                    <ul class="dropdown-menu" th:aria-labelledby="'maintain'">
-                        <li >
-                            <a class="dropdown-item"  href="#" th:onclick="redirectPage([[@{'/web/maintain/fiscNotice'}]])" ><span th:utext="#{function.maintain.fisc-notice.title}"></span></a>
+            <ul class="navbar-nav mr-auto" th:if="${menuMap}">
+                <li class="nav-item dropdown" th:each="menuItem: ${menuMap.root}">
+                    <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown"><span
+                            th:utext="${menuItem.funcName}"></span></a>
+                    <ul class="dropdown-menu">
+                        <li th:each="subMenuItem : ${menuMap.get(menuItem.funcId)}">
+                            <a th:class="${menuMap.containsKey(subMenuItem.funcId)}?'dropdown-toggle dropdown-item':'dropdown-item'"
+                               href="#" th:onclick="redirectPage([[@{${subMenuItem.funcUrl}}]]);"><span
+                                    th:utext="${subMenuItem.funcName}"></span></a>
+                            <th:block th:if="${menuMap.containsKey(subMenuItem.funcId)}"
+                                      th:insert="@{common/menuFragment} :: menu"
+                                      th:with="menuItemsList=${menuMap.get(subMenuItem.funcId)}"></th:block>
                         </li>
                     </ul>
                 </li>
             </ul>
+            <ul class="navbar-nav mr-auto" th:if="${menuMap == null}">
 
-            <form id="logoutForm" class="form-inline my-2 my-lg-0 d-flex align-items-end" method="POST" th:action="@{'/logout'}" >
+            </ul>
 
-                <div class="dropdown dropleft px-2">
-                    <a class="text-light dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown"
-                       aria-haspopup="true" aria-expanded="false">
-                        <i class="fas fa-user-cog"></i>
-                    </a>
-
+            <li class="nav-item dropdown" style=" list-style-type: none; " th:if="${loginForm != null}" >
+                <a class="nav-link dropdown-toggle text-light" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <span class="mr-2 text-black" th:text="${loginForm.loginUserName}"></span>
+                    <div style="display: inline-block;width: 24px;"><img class="img-profile rounded-circle w-100" th:src="@{/static/img/profile.png}"></div>
+                </a>
+                <div class="dropdown-menu dropdown-menu-right shadow" aria-labelledby="userDropdown">
+                    <a class="dropdown-item" href="#"><span class="auto-mr" th:text="'登入者:　' + ${loginForm.loginUserName}"></span></a>
+                    <a class="dropdown-item" href="#"><span class="auto-mr" th:text="'部　門:　' + ${loginForm.loginRoleName}"></span></a>
+                    <a class="dropdown-item" href="#"><span class="auto-mr" th:text="'權　限:　' + ${loginForm.loginRoleName}"></span></a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal" onclick="logout()"><i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>登出</a>
                 </div>
-                <input type="hidden" id="_loginUrl" th:value="@{/login}">
-                <button class="btn btn-outline-light btn-sm px-4" type="button" onclick="logout()">登出</button>
+            </li>
+            <form id="logoutForm" class="form-inline my-2 my-lg-0 d-flex align-items-end" method="POST"
+                  th:action="@{/logout}" th:if="${loginForm != null}" th:object="${loginForm}">
+
+<!--                <div class="dropdown dropleft px-2">-->
+<!--                    <a class="text-light dropdown-toggle" href="#" role="button" id="dropdownMenuLink"-->
+<!--                       data-toggle="dropdown"-->
+<!--                       aria-haspopup="true" aria-expanded="false">-->
+<!--                        <i class="fas fa-user-cog"></i>-->
+<!--                    </a>-->
+
+<!--                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">-->
+<!--                        <span class="dropdown-item px-2" th:text="'登入者:' + *{loginUserName}">登入者：系統管理員</span>-->
+<!--                        <span class="dropdown-item px-2" th:text="'部　門:' + *{loginRoleName}">部門：0004</span>-->
+<!--                        <span class="dropdown-item px-2" th:text="'權　限:' + *{loginRoleName}">權限：系統管理</span>-->
+<!--                        <div class="dropdown-divider"></div>-->
+<!--                        <div class="custom-control custom-switch dropdown-item">-->
+<!--                            <input type="checkbox" class="custom-control-input" id="darkSwitch">-->
+<!--                            <label class="custom-control-label" for="darkSwitch">Dark Mode</label>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+
+<!--                <button class="btn btn-outline-light btn-sm px-4" type="button" onclick="logout()">登出</button>-->
+            </form>
+            <input type="hidden" id="_loginUrl" th:value="@{/login?logout=true}"></div>
+            <form id="_home" th:action="@{/web/index}" method="GET">
             </form>
         </div>
     </nav>
     <script th:inline="javascript">
-        function logout(){
+        function logout() {
             onLoading();
+
+            // clearTimeout(_timeoutDashboard);
             // db login
             $.ajax({
                 type: 'POST',
                 url: $('#logoutForm').attr('action'),
                 data: getFormData($('#logoutForm')),
-                complete: function (XMLHttpRequest, textStatus){
+                complete: function (XMLHttpRequest, textStatus) {
                     completeLoading();
                     Swal.fire({
                         icon: "success",
@@ -69,6 +110,10 @@
                     })
                 }
             });
+        }
+
+        function homePage() {
+            document.location.href = $('#_home').attr('action');
         }
     </script>
 </th:block>

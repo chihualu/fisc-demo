@@ -2,10 +2,13 @@ package org.demo;
 
 import org.apache.tomcat.util.buf.Asn1Parser;
 import org.bouncycastle.util.encoders.Base64;
+import org.h2.tools.Server;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.context.annotation.Bean;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jms.annotation.EnableJms;
 
 import javax.crypto.BadPaddingException;
@@ -21,9 +24,12 @@ import java.security.NoSuchAlgorithmException;
 import java.security.PublicKey;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.X509EncodedKeySpec;
+import java.sql.SQLException;
 
-@SpringBootApplication(exclude = DataSourceAutoConfiguration.class)
+@SpringBootApplication
 @EnableJms
+@EntityScan
+@EnableJpaRepositories
 public class WebApiApplication {
 
 
@@ -32,5 +38,4 @@ public class WebApiApplication {
         SpringApplication.run(WebApiApplication.class, args);
 
     }
-
 }

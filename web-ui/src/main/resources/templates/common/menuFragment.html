@@ -1,0 +1,27 @@
+<!DOCTYPE HTML>
+<html
+        xmlns:th="http://www.thymeleaf.org">
+<head>
+    <style id="antiClickjack">body {
+        display: none !important;
+    }</style>
+    <script>
+        if (self === top) {
+            var antiClickjack = document.getElementById("antiClickjack");
+            antiClickjack.parentNode.removeChild(antiClickjack);
+        }
+    </script>
+</head>
+<body>
+<th:block th:fragment="menu">
+    <ul class="submenu dropdown-menu">
+        <li th:each="menuItem : ${menuItemsList}">
+            <a class="dropdown-item" href="#" th:onclick="redirectPage([[@{${menuItem.funcUrl}}]]);"><span
+                    th:text="${menuItem.funcName}"></span></a>
+            <th:block th:insert="@{common/menuFragment} :: menu(menuItemsList=${menuMap.get(menuItem.funcId)})"
+                      th:if="${menuMap.containsKey(menuItem.funcId)}"></th:block>
+        </li>
+    </ul>
+</th:block>
+</body>
+</html>
