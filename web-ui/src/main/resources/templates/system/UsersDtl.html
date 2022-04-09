@@ -1,0 +1,124 @@
+<html layout:decorate="~{common/layout}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <style id="antiClickjack">body {
+        display: none !important;
+    }</style>
+    <script>
+        if (self === top) {
+            var antiClickjack = document.getElementById("antiClickjack");
+            antiClickjack.parentNode.removeChild(antiClickjack);
+        }
+    </script>
+</head>
+<body>
+<div layout:fragment="content">
+    <th:block th:include="common/titleBar :: titleBar"/>
+    <div class="card">
+        <div class="card-body collapse show" id="collapseSearch">
+            <form id="ajaxForm" th:object="${webUserInfo}" class="needs-validation">
+                <div class="alert alert-danger" role="alert" style="display: none;"></div>
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label" for="userId" th:text="#{function.system.users.userId}"></label>
+                    <div class="col-sm-10">
+                        <input class="form-control form-control-sm" id="userId" name="userId" th:value="*{userId}" th:maxlength="30" type="text" required pattern="^[0-9a-zA-Z_]*$" th:readonly="${action=='update'}?'readonly':'false'">
+                        <div class="invalid-feedback"><label class="col-form-label" th:utext="#{common.validation.notEmptyAndOnlyEnAndNum.message}"></label></div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label" for="userId" th:text="#{function.system.users.userName}"></label>
+                    <div class="col-sm-10">
+                        <input class="form-control form-control-sm" id="userName" name="userName" th:value="*{userName}" th:maxlength="60" type="text" required>
+                        <div class="invalid-feedback"><label class="col-form-label" th:utext="#{common.validation.notEmpty.message}"></label></div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label" for="roleId" th:text="#{function.system.users.roleId}"></label>
+                    <div class="col-sm-10">
+                        <select class="form-control form-control-sm" id="roleId" name="roleId" required>
+                            <option th:text="#{common.label.defaultSelect}" value=""></option>
+                            <option th:each="webRoleInfoLVBean:${webRoleInfoLVBeanList}"
+                                    th:text="${webRoleInfoLVBean.value}+'-'+${webRoleInfoLVBean.label}"
+                                    th:value="${webRoleInfoLVBean.value}"
+                                    th:selected="${webUserInfo.roleId eq webRoleInfoLVBean.value}"></option>
+                        </select>
+                        <div class="invalid-feedback"><label class="col-form-label" th:utext="#{common.validation.notEmpty.message}"></label></div>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-sm-12 text-right">
+                        <button class="btn btn-primary btn-sm mx-2 px-4" id="btn_create" th:utext="#{btn.submit}" th:if="${action == 'create'}" type="button"></button>
+                        <button class="btn btn-primary btn-sm mx-2 px-4" id="btn_update" th:utext="#{btn.confirm}" th:if="${action == 'update'}" type="button"></button>
+                        <button class="btn btn-secondary btn-sm mx-2 px-4" id="btn_cancel" th:utext="#{btn.cancel}" type="button"></button>
+                    </div>
+                </div>
+                <input type="hidden" id="action" th:value="${action}" />
+            </form>
+        </div>
+    </div>
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+
+        $('#btn_create').on('click', function(event) {
+            // 前端表單檢核
+            if(!form_Validity('ajaxForm')){
+                return;
+            }
+
+            let url = [[@{/api/v1/system/users}]];
+            let method = "POST";
+            ajax(url, method, getFormData($('#ajaxForm')), successHandler, failedHandler);
+        });
+
+        $('#btn_update').on('click', function(event) {
+            // 前端表單檢核
+            if(!form_Validity('ajaxForm')){
+                return;
+            }
+
+            url = [[@{/api/v1/system/users}]]+"/"+$('#userId').val();
+            method = "PUT";
+            ajax(url, method, getFormData($('#ajaxForm')), successHandler, failedHandler);
+        });
+
+        $('#btn_cancel').on('click', function(event) {
+            onLoading();
+            redirectPage([[@{/web/system/users}]]);
+        });
+
+        function successHandler(jqXHR) {
+            console.log(jqXHR);
+            let actionLabel;
+            if ($('#action').val() == 'create') {
+                actionLabel = '新增';
+            } else {
+                actionLabel = '修改';
+            }
+            Swal.fire({
+                title: '送出成功',
+                text: jqXHR.userId + actionLabel + "成功",
+                icon: 'success',
+                willClose: function() {
+                    onLoading();
+                    redirectPage([[@{/web/system/users}]]);
+                }
+            })
+        }
+
+        function failedHandler(jqXHR){
+            console.log(jqXHR);
+            Swal.fire ({
+                title: '送出失敗',
+                text: jqXHR.responseJSON.message,
+                icon: "error"
+            });
+        }
+
+        /*]]>*/
+    </script>
+</div>
+</body>
+</html>
+
+
