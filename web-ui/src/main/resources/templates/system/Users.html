@@ -22,9 +22,9 @@
         <div class="card-body" >
             <form id="ajaxForm" method="GET" th:action="@{/api/v1/system/users}" class="needs-validation">
                 <div class="alert alert-danger" role="alert" style="display: none;"></div>
-                <!-- 類別 -->
+                <!-- 查詢條件 -->
                 <div class="form-group row">
-                    <label class="col-sm-2 col-form-label">使用者</label>
+                    <label class="col-sm-2 col-form-label" th:text="#{function.system.users.userId}"></label>
                     <div class="col-sm-10">
                         <input type="text" class="form-control" id="userId" name="userId">
                     </div>
@@ -41,16 +41,18 @@
                         <table class="table table-sm table-striped table-bordered table-hover w-100 display" id="dataTables">
                             <thead>
                             <tr>
-                                <th class="text-center align-middle" >使用者代號</th>
-                                <th class="text-center align-middle" >使用者名稱</th>
-                                <th class="text-center align-middle" >群組代號</th>
-                                <th class="text-center align-middle" >最後登入IP</th>
+                                <th class="text-center align-middle" th:text="#{function.system.users.userId}"></th>
+                                <th class="text-center align-middle" th:text="#{function.system.users.userName}"></th>
+                                <th class="text-center align-middle" th:text="#{function.system.users.roleId}"></th>
+                                <th class="text-center align-middle" th:text="#{function.system.users.last_login_ip}"></th>
 
                             </tr>
                             </thead>
                         </table>
                     </div>
                 </div>
+                <!-- 新增頁按鈕 -->
+                <div class="align-items-center text-center plus-icon" alt="新增"><a href="#" th:onclick="redirectPage([[@{/web/system/users/dtl}]])"><i class="fas fa-plus fa-2x"></i></a></div>
             </form>
         </div>
     </div>
