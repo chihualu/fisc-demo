@@ -92,11 +92,126 @@
 1. 期中考成績（__20%__）：
    >**財金跨行系統學習心得（500-1000字）**
 2. 期末考成績（__70%__）：
-   >**財金跨行系統實作**\
-   > WebUI   CRUD + 發送OPC查詢行庫狀態\
-   >BackEnd 接收Web行庫狀態查詢後，發送至財金(模擬)後，使用財金回傳之內容回傳至UI上顯示
+   > **財金跨行系統實作**
 3. 課堂提問者（__10%__）：
    >**不限提問次數+2分/堂課，學期分數至多+10分。**
+
+## 期末作業內容
+  
+## WebUI 
+- ### 功能一: 銀行行庫檔案 的CRUD功能
+   #### 功能說明
+  - 頁面輸入bankCode(選填), telZone(選填)查詢
+  - 詳細內容為BANKTAB資料
+
+   #### URL格式範例
+  - 新增(POST) **/api/v1/fisc/bank/**
+  - 查詢多筆(GET) **/api/v1/fisc/bank?bankCode=&telZone=**
+  - 查詢單筆(GET) **/api/v1/fisc/bank/987**
+  - 刪除(DELETE) **/api/v1/fisc/bank/987**
+  - 修改(PUT) **/api/v1/fisc/bank/987**
+```markdown
+format1: 新增/修改
+    Req: {
+            "bankCode": "987", 
+            "bankName": "XX銀行", 
+            "telZone": "02", 
+            "telNo": "23456789"
+         }
+    Rsp: {
+         }
+
+format2: 查詢單筆 
+    Req: null
+    Rsp: {
+            "bankCode": "987",
+            "bankName": "XX銀行",
+            "telZone": "02",
+            "telNo": "23456789"
+         }
+
+format3: 查詢多筆
+    Req: null
+    Rsp: {
+            data: [
+                {
+                    "bankCode": "987", 
+                    "bankName": "XX銀行", 
+                    "telZone": "02", 
+                    "telNo": "23456789"
+                },
+                {
+                    "bankCode": "988",
+                    "bankName": "OO銀行",
+                    "telZone": "02",
+                    "telNo": "23456788"
+                }
+            ]
+        }
+format4: 刪除
+    Req: null
+    Rsp: {
+         }
+```
+
+- ### 功能二: 發送OPC查詢行庫狀態
+   ####  功能說明
+  - 頁面輸入(bankCode)
+  - 發送訊息至Backend
+  - 收到訊息後顯示於畫面上
+
+   #### URL格式範例
+  - 發查(POST) **/api/v1/fisc/status/**
+```markdown
+UI  
+    Req: {
+            "bankCode": "987"
+         }
+    Rsp: {
+            "bankCode": "987",
+            "fiscStatus": "1",
+            "bankStatus": "1",
+            "appStatus": "1"
+         }
+
+Backend
+    Req: { 
+            "txnType": "0200",
+            "txnCode": "3201",
+            "txnDateTime": "20220428120000",
+            "txnStan": "0000001",
+            "returnCode": "0000",
+            "bankCode": "987"
+         }
+
+    Rsp: {
+            "txnType": "0210",
+            "txnCode": "3201",
+            "txnDateTime": "20220428120000",
+            "txnStan": "0000001",
+            "returnCode": "0001",
+            "bankCode": "987",
+            "fiscStatus": "1",
+            "bankStatus": "1",
+            "appStatus": "1"
+         }
+```
+## Backend
+- ### OPC查詢行庫狀態 P203201FmWebReq
+  >  功能說明
+   > 1. 接收資料(bankCode)
+   > 2. 發查至財金 (待討論)
+   > 3. 回覆狀態回UI(fiscStatus, bankStatus, appStatus)
+## Database
+
+- ### BANKTAB(銀行行庫檔) 
+  
+  >BANKCODE,行庫代碼,VARCHAR(3)\
+  >BANKNAME,行庫代碼,VARCHAR(36)\
+  >TELZONE,區碼,VARCHAR(3)\
+  >TELNO,電話,VARCHAR(10)\
+  >UPDATEDATE,更新日期,VARCHAR(8)
+  
 
 ### **加分名單**
 ```markdown

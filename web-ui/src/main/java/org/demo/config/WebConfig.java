@@ -1,8 +1,8 @@
 package org.demo.config;
 
 import lombok.extern.log4j.Log4j2;
-import org.demo.db.entity.WebRoleInfo;
-import org.demo.db.entity.WebUserInfo;
+import org.demo.db.modal.WebRoleInfo;
+import org.demo.db.modal.WebUserInfo;
 import org.demo.db.repository.WebRoleInfoRepository;
 import org.demo.db.repository.WebUserInfoRepository;
 import org.demo.entity.common.WebUserDetails;
@@ -10,12 +10,10 @@ import org.demo.filter.JwtFilter;
 import org.demo.handler.CustomAuthenticationFailureHandler;
 import org.demo.handler.CustomLogoutSuccessHandler;
 import org.demo.handler.CustomSimpleUrlAuthenticationSuccessHandler;
-import org.demo.provider.CustomAuthenticationProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -24,7 +22,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;

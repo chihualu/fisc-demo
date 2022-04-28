@@ -1,8 +1,7 @@
 package org.demo.entity.common;
 
 import lombok.extern.log4j.Log4j2;
-import org.demo.db.entity.WebRoleInfo;
-import org.demo.db.entity.WebUserInfo;
+import org.demo.db.modal.WebUserInfo;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 

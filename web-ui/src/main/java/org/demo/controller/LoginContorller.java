@@ -3,9 +3,9 @@ package org.demo.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.log4j.Log4j2;
-import org.demo.db.entity.WebFuncInfo;
-import org.demo.db.entity.WebRoleInfo;
-import org.demo.db.entity.WebUserInfo;
+import org.demo.db.modal.WebFuncInfo;
+import org.demo.db.modal.WebRoleInfo;
+import org.demo.db.modal.WebUserInfo;
 import org.demo.db.repository.WebFuncInfoRepository;
 import org.demo.db.repository.WebRoleInfoRepository;
 import org.demo.db.repository.WebUserInfoRepository;
@@ -26,7 +26,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.stream.Collectors;
 
 @Controller
 @Log4j2

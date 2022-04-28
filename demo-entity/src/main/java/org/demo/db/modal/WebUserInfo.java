@@ -1,4 +1,4 @@
-package org.demo.db.entity;
+package org.demo.db.modal;
 
 import lombok.Data;
 

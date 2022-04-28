@@ -1,6 +1,6 @@
 package org.demo.db.custom;
 
-import org.demo.db.entity.WebUserInfo;
+import org.demo.db.modal.WebUserInfo;
 
 import java.util.List;
 

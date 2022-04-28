@@ -2,7 +2,7 @@ package org.demo.db.custom.impl;
 
 import org.apache.commons.lang3.StringUtils;
 import org.demo.db.custom.WebUserInfoRepositoryCustom;
-import org.demo.db.entity.WebUserInfo;
+import org.demo.db.modal.WebUserInfo;
 import org.demo.db.repository.WebUserInfoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
