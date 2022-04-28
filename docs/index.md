@@ -100,16 +100,17 @@
   
 ## WebUI 
 - ### 功能一: 銀行行庫檔案 的CRUD功能
-   #### 功能說明
+   ### 功能說明
   - 頁面輸入bankCode(選填), telZone(選填)查詢
   - 詳細內容為BANKTAB資料
 
-   #### URL格式範例
+   ### URL格式範例
   - 新增(POST) **/api/v1/fisc/bank/**
   - 查詢多筆(GET) **/api/v1/fisc/bank?bankCode=&telZone=**
   - 查詢單筆(GET) **/api/v1/fisc/bank/987**
   - 刪除(DELETE) **/api/v1/fisc/bank/987**
   - 修改(PUT) **/api/v1/fisc/bank/987**
+
 ```markdown
 format1: 新增/修改
     Req: {
@@ -155,13 +156,14 @@ format4: 刪除
 ```
 
 - ### 功能二: 發送OPC查詢行庫狀態
-   ####  功能說明
+   ###  功能說明
   - 頁面輸入(bankCode)
   - 發送訊息至Backend
   - 收到訊息後顯示於畫面上
 
-   #### URL格式範例
+   ### URL格式範例
   - 發查(POST) **/api/v1/fisc/status/**
+
 ```markdown
 UI  
     Req: {
