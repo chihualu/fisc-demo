@@ -100,6 +100,7 @@
   
 ## WebUI 
 - ### 功能一: 銀行行庫檔案 的CRUD功能
+
    ### 功能說明
   - 頁面輸入bankCode(選填), telZone(選填)查詢
   - 詳細內容為BANKTAB資料
@@ -156,6 +157,7 @@ format4: 刪除
 ```
 
 - ### 功能二: 發送OPC查詢行庫狀態
+
    ###  功能說明
   - 頁面輸入(bankCode)
   - 發送訊息至Backend
@@ -185,7 +187,6 @@ Backend
             "returnCode": "0000",
             "bankCode": "987"
          }
-
     Rsp: {
             "txnType": "0210",
             "txnCode": "3201",
@@ -200,6 +201,7 @@ Backend
 ```
 ## Backend
 - ### OPC查詢行庫狀態 P203201FmWebReq
+
   ### 功能說明
   > 1. 接收資料(bankCode)
   > 2. 發查至財金 (待討論)
