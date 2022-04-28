@@ -200,16 +200,17 @@ Backend
 ```
 ## Backend
 - ### OPC查詢行庫狀態 P203201FmWebReq
-  >  功能說明
-   > 1. 接收資料(bankCode)
-   > 2. 發查至財金 (待討論)
-   > 3. 回覆狀態回UI(fiscStatus, bankStatus, appStatus)
+  ### 功能說明
+  > 1. 接收資料(bankCode)
+  > 2. 發查至財金 (待討論)
+  > 3. 回覆狀態回UI(fiscStatus, bankStatus, appStatus)
+
 ## Database
 
 - ### BANKTAB(銀行行庫檔) 
   
   >BANKCODE,行庫代碼,VARCHAR(3)\
-  >BANKNAME,行庫代碼,VARCHAR(36)\
+  >BANKNAME,行庫名稱,VARCHAR(36)\
   >TELZONE,區碼,VARCHAR(3)\
   >TELNO,電話,VARCHAR(10)\
   >UPDATEDATE,更新日期,VARCHAR(8)
