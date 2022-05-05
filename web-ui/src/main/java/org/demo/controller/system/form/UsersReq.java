@@ -5,4 +5,5 @@ import lombok.Data;
 @Data
 public class UsersReq {
     private String userId;
+    private String editUserId;
 }
