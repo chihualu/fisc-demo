@@ -172,7 +172,7 @@
                 $('#dtl-roleId').text(response['roleId']);
                 $('#dtl-lastLoginIp').text(response['lastLoginIp']);
                 $('#dtlForm #edit-userId').val(response['userId']);
-            }, failedDefaultHandler);
+            }, failedHandler);
         });
 
         $('#btn-edit').on('click', function (event) {
@@ -192,7 +192,9 @@
                 cancelButtonText: '取消'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    ajax($('#userUrl').val(), "DELETE", {"userId": $('#edit-userId').val()}, successHandler, failedDefaultHandler);
+                    let url = $('#userUrl').val() + $('#edit-userId').val();
+                    let method = "DELETE";
+                    ajax(url, method, null, successHandler, failedHandler);
                 }
             })
         });
@@ -209,6 +211,16 @@
                     backToQueryPage($('#queryForm'));
                 }
             })
+        }
+
+        function failedHandler(jqXHR){
+            // console.log(jqXHR);
+
+            Swal.fire ({
+                title: '送出失敗',
+                text: jqXHR.responseJSON.message,
+                icon: "error"
+            });
         }
 
         /*]]>*/

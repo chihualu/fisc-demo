@@ -156,19 +156,21 @@ public class UsersController {
         }
     }
 
-    @DeleteMapping("/api/v1/system/users")
+    @DeleteMapping("/api/v1/system/users/{userId}")
     @Logging
-    public ResponseEntity<Object> delete(@RequestBody WebUserInfo webUserInfo) {
+    public ResponseEntity<Object> delete(@PathVariable(value = "userId") String pathUserId) {
         Map map = new HashMap();
-        String userId = "";
         try {
-            userId = webUserInfo.getUserId();
-            if (!webUserInfoRepository.existsById(userId)) {
+            if (StringUtils.isBlank(pathUserId)) {
+                map.put("message", "userId不可為空");
+                return ResponseEntity.badRequest().body(map);
+            }
+            if (!webUserInfoRepository.existsById(pathUserId)) {
                 map.put("message", "資料不存在");
                 return ResponseEntity.badRequest().body(map);
             } else {
-                webUserInfoRepository.deleteById(userId);
-                map.put("message", userId + " 刪除成功");
+                webUserInfoRepository.deleteById(pathUserId);
+                map.put("message", pathUserId + " 刪除成功");
                 return ResponseEntity.ok(map);
             }
         } catch (Exception e) {
