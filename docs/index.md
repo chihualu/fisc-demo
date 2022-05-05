@@ -215,7 +215,7 @@ Backend
 
 - ### BANKTAB(銀行行庫檔) 
   
-  >BANKCODE,行庫代碼,VARCHAR(3)\
+  >BANKCODE,行庫代碼,VARCHAR(3),PRIMARY KEY\
   >BANKNAME,行庫名稱,VARCHAR(36)\
   >TELZONE,區碼,VARCHAR(3)\
   >TELNO,電話,VARCHAR(10)\
