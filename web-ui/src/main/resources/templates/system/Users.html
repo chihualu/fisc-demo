@@ -45,7 +45,7 @@
                                 <th class="text-center align-middle" th:text="#{function.system.users.userName}"></th>
                                 <th class="text-center align-middle" th:text="#{function.system.users.roleId}"></th>
                                 <th class="text-center align-middle" th:text="#{function.system.users.last_login_ip}"></th>
-
+                                <th class="text-center align-middle" >&nbsp;</th>
                             </tr>
                             </thead>
                         </table>
@@ -56,6 +56,54 @@
             </form>
         </div>
     </div>
+
+    <!-- 明細頁 -->
+    <div aria-hidden="true" aria-labelledby="dtlModalLabel" class="modal fade" data-backdrop="static" data-keyboard="false" id="dtlModal" role="dialog" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" th:text="#{function.system.users.title}"></h5>
+                </div>
+                <div class="modal-body">
+                    <th:block th:include="common/titleBar :: titleBar"/>
+                    <div class="container-fluid">
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label" th:text="#{function.system.users.userId}"></label>
+                            <label class="col-sm-10 col-form-label" id="dtl-userId"></label>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label" for="dtl-userName" th:text="#{function.system.users.userName}"></label>
+                            <div class="col-sm-10">
+                                <span id="dtl-userName"></span>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label" for="dtl-roleId" th:text="#{function.system.users.roleId}"></label>
+                            <div class="col-sm-10">
+                                <span id="dtl-roleId"></span>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label" for="dtl-lastLoginIp" th:text="#{function.system.users.last_login_ip}"></label>
+                            <div class="col-sm-10">
+                                <span id="dtl-lastLoginIp"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer d-flex justify-content-center">
+                    <form id="dtlForm" th:action="@{/web/system/users/dtl}" method="GET">
+                        <input type="hidden" id="edit-userId" name="editUserId" value="" ></input>
+                        <input type="button" class="btn btn-primary" id="btn-edit" th:value="#{btn.edit}"></input>
+                        <input type="button" class="btn btn-danger" id="btn-delete" th:value="#{btn.delete}"></input>
+                        <button class="btn btn-secondary" aria-label="Close" data-dismiss="modal" th:utext="#{btn.back}" type="button"></button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <form id="queryForm" method="GET" th:action="@{/web/system/users}">
+        </form>
+        <input type="hidden" id="userUrl" th:value="@{/api/v1/system/users/}"></input>
 
     <script th:inline="javascript">
         /*<![CDATA[*/
@@ -85,7 +133,21 @@
                     {'data': 'userId', "defaultContent": ""},
                     {'data': 'userName', "defaultContent": ""},
                     {'data': 'roleId', "defaultContent": ""},
-                    {'data': 'lastLoginIp', "defaultContent": "-"}],
+                    {'data': 'lastLoginIp', "defaultContent": "-"},
+                    {'data': '', "defaultContent": ""}
+                ],
+                "columnDefs": [
+                        {
+                            // targets用於指定操作的列，從第0列開始，-1為最後一列
+                            // return後邊是我們希望在指定列填入的按鈕程式碼
+                            "targets": -1,
+                            "render": function ( data, type, row, meta ) {
+                                // 增加明細(放大鏡)按鈕
+                                let attr = "data-userId='"+row.userId+"'";
+                                return "<a href='#'><i class='fas fa-search'  data-toggle='modal' data-target='#dtlModal' "+ attr+"></i></a>";
+                            }
+                        }
+                    ],
                 "stateSave": false,
                 "order": [],
                 "scrollX": true,
@@ -97,6 +159,57 @@
             }
             $('#dataTables').DataTable(dataTableConfig);
         })
+
+        // 顯示明細頁面
+        $('#dtlModal').on('show.bs.modal', function (event) {
+            let button = $(event.relatedTarget) // Button that triggered the modal
+            let userId = button.data('userid') // Extract info from data-* attributes
+            // console.log('userId='+userId);
+
+            ajax($('#userUrl').val() + userId , "GET", "", function(response){
+                $('#dtl-userId').text(response['userId']);
+                $('#dtl-userName').text(response['userName']);
+                $('#dtl-roleId').text(response['roleId']);
+                $('#dtl-lastLoginIp').text(response['lastLoginIp']);
+                $('#dtlForm #edit-userId').val(response['userId']);
+            }, failedDefaultHandler);
+        });
+
+        $('#btn-edit').on('click', function (event) {
+            onLoading();
+            backToQueryPage($('#dtlForm'));
+        });
+
+        $('#btn-delete').on('click', function (event) {
+            Swal.fire({
+                title: "確定要"+$(this).val()+"嗎?",
+                text: $('#edit-userId').val(),
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#dd3333',
+                confirmButtonText: '確定',
+                cancelButtonText: '取消'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    ajax($('#userUrl').val(), "DELETE", {"userId": $('#edit-userId').val()}, successHandler, failedDefaultHandler);
+                }
+            })
+        });
+
+        function successHandler(jqXHR) {
+            // console.log(jqXHR);
+
+            Swal.fire({
+                title: '送出成功',
+                text: jqXHR.message,
+                icon: 'success',
+                willClose: function() {
+                    onLoading();
+                    backToQueryPage($('#queryForm'));
+                }
+            })
+        }
 
         /*]]>*/
     </script>

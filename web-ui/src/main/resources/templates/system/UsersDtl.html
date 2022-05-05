@@ -55,6 +55,8 @@
                 </div>
                 <input type="hidden" id="action" th:value="${action}" />
             </form>
+            <form id="queryForm" method="GET" th:action="@{/web/system/users}" >
+            </form>
         </div>
     </div>
     <script th:inline="javascript">
@@ -65,7 +67,6 @@
             if(!form_Validity('ajaxForm')){
                 return;
             }
-
             let url = [[@{/api/v1/system/users}]];
             let method = "POST";
             ajax(url, method, getFormData($('#ajaxForm')), successHandler, failedHandler);
@@ -76,7 +77,6 @@
             if(!form_Validity('ajaxForm')){
                 return;
             }
-
             url = [[@{/api/v1/system/users}]]+"/"+$('#userId').val();
             method = "PUT";
             ajax(url, method, getFormData($('#ajaxForm')), successHandler, failedHandler);
@@ -84,11 +84,12 @@
 
         $('#btn_cancel').on('click', function(event) {
             onLoading();
-            redirectPage([[@{/web/system/users}]]);
+            backToQueryPage($('#queryForm'));
         });
 
         function successHandler(jqXHR) {
-            console.log(jqXHR);
+            // console.log(jqXHR);
+
             let actionLabel;
             if ($('#action').val() == 'create') {
                 actionLabel = '新增';
@@ -97,17 +98,18 @@
             }
             Swal.fire({
                 title: '送出成功',
-                text: jqXHR.userId + actionLabel + "成功",
+                text: jqXHR.userId + ' ' + actionLabel + "成功",
                 icon: 'success',
                 willClose: function() {
                     onLoading();
-                    redirectPage([[@{/web/system/users}]]);
+                    backToQueryPage($('#queryForm'));
                 }
             })
         }
 
         function failedHandler(jqXHR){
-            console.log(jqXHR);
+            // console.log(jqXHR);
+
             Swal.fire ({
                 title: '送出失敗',
                 text: jqXHR.responseJSON.message,
