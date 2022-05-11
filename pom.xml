@@ -22,6 +22,7 @@
         <module>web-ui</module>
         <module>backend</module>
         <module>demo-entity</module>
+        <module>fisc</module>
     </modules>
 
 </project>
