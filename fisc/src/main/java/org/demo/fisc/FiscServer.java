@@ -23,12 +23,13 @@ public class FiscServer {
             }
 
             if (map.get("txnCode").equals("3100")) {
-                rspMap.put("txnType", "2100");
+                rspMap.put("txnType", "0210");
                 rspMap.put("returnCode", "0000");
             }
 
             if (map.get("txnCode").equals("3109")) {
-
+                rspMap.put("txnType", "0210");
+                p3109process(rspMap);
             }
 
             rspStr = objectMapper.writeValueAsString(map);
@@ -41,7 +42,45 @@ public class FiscServer {
 
     ;
 
-    private void p3901process() {
+    private void p3109process(Map<String, String> rspMap) {
+        if (!rspMap.containsKey("bankCode")){
+            rspMap.put("returnCode", "2999");
+        }
+
+        String bankId = rspMap.get("bankCode");
+
+        switch (bankId){
+            case "987":
+                rspMap.put("returnCode", "0000");
+                rspMap.put("fiscStatus","1");
+                rspMap.put("bankStatus","1");
+                rspMap.put("appStatus","1");
+                break;
+
+            case "809":
+                rspMap.put("returnCode", "0000");
+                rspMap.put("fiscStatus","1");
+                rspMap.put("bankStatus","1");
+                rspMap.put("appStatus","1");
+                break;
+
+            case "012":
+                rspMap.put("returnCode", "0000");
+                rspMap.put("fiscStatus","1");
+                rspMap.put("bankStatus","1");
+                rspMap.put("appStatus","1");
+                break;
+
+            case "013":
+                rspMap.put("returnCode", "0000");
+                rspMap.put("fiscStatus","1");
+                rspMap.put("bankStatus","1");
+                rspMap.put("appStatus","1");
+                break;
+
+            default :
+                rspMap.put("returnCode", "2999");
+        };
 
     }
 
