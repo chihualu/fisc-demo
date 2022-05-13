@@ -60,7 +60,7 @@ public class FiscNoticeController {
             FiscNoticeRsp fiscNoticeRsp = new FiscNoticeRsp();
             fiscNoticeRsp.setReturnCode(p3100Rsp.getReturnCode());
             fiscNoticeRsp.setReturnDesc(p3100Rsp.getReturnCode().equals("0000") ? "Success" : "Failed");
-
+            log.debug("TEST2");
             return ResponseEntity.ok(fiscNoticeRsp);
         }catch (Exception e){
             log.error("", e);
