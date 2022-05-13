@@ -32,7 +32,7 @@ public class FiscServer {
                 p3109process(rspMap);
             }
 
-            rspStr = objectMapper.writeValueAsString(map);
+            rspStr = objectMapper.writeValueAsString(rspMap);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
