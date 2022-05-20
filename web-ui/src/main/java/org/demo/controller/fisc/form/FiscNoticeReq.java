@@ -5,4 +5,5 @@ import lombok.Data;
 @Data
 public class FiscNoticeReq {
     private String message;
+    private String bankCode;
 }
